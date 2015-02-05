@@ -37,6 +37,7 @@ class profile::base::common (
   $manage_sudo            = false,
   $manage_authconfig      = false,
   $manage_firewall        = false,
+  $manage_networkifs      = false,
   $common_packages        = [],
   $common_packages_ensure = 'installed',
   $common_classes         = [],
@@ -44,7 +45,7 @@ class profile::base::common (
   include $common_classes
 
   if $manage_augeasproviders {
-    include ::augeasproviders::instances
+    include ::augeasproviders
   }
 
   if $manage_accounts {
@@ -85,6 +86,10 @@ class profile::base::common (
     include ::firewall
     include ::profile::firewall::pre
     include ::profile::firewall::post
+  }
+
+  if $manage_networkifs {
+    include ::profile::base::interfaces
   }
 
   if $common_packages {
