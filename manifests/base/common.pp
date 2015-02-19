@@ -38,7 +38,6 @@ class profile::base::common (
   $manage_authconfig      = false,
   $manage_firewall        = false,
   $manage_networkifs      = false,
-  $manage_vhosts          = false,
   $manage_timezones	  = false,
   $common_packages        = [],
   $common_packages_ensure = 'installed',
@@ -92,10 +91,6 @@ class profile::base::common (
 
   if $manage_networkifs {
     include ::profile::base::interfaces
-  }
-
-  if $manage_vhosts {
-    include ::profile::base::vhosts
   }
 
   if $manage_timezones {
