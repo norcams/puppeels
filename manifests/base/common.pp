@@ -38,6 +38,7 @@ class profile::base::common (
   $manage_authconfig      = false,
   $manage_firewall        = false,
   $manage_networkifs      = false,
+  $manage_lvm             = false,
   $manage_timezones	  = false,
   $common_packages        = [],
   $common_packages_ensure = 'installed',
@@ -91,6 +92,10 @@ class profile::base::common (
 
   if $manage_networkifs {
     include ::profile::base::interfaces
+  }
+
+  if $manage_lvm {
+    include ::profile::base::lvm
   }
 
   if $manage_timezones {
