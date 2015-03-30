@@ -9,10 +9,16 @@
 #   mod 'theforeman/tftp'
 #   mod 'zack/r10k'
 #
-class profile::application::foreman {
+class profile::application::foreman(
+  $manage_eyaml = false
+) {
 
   include ::r10k
   include ::puppet
   include ::foreman
   include ::foreman_proxy
+
+  if $manage_eyaml {
+    include ::hiera_eyaml
+  }
 }
