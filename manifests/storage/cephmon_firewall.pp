@@ -1,7 +1,7 @@
-# Class: profile::storage::cephmon
+# Class: profile::storage::cephmon_firewall
 #
 #
-class profile::storage::cephmon(
+class profile::storage::cephmon_firewall(
   $manage_firewall = false,
   $firewall_extras = {
     'mon_listen'   => {},
