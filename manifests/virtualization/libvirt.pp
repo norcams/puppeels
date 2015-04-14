@@ -31,7 +31,7 @@ class profile::virtualization::libvirt(
     }
 
     profile::firewall::rule { '182 libvirt-graphics console accept tcp':
-      port   => 5900
+      port   => 5900,
       extras => $firewall_extras['graphics']
     }
   }
