@@ -2,23 +2,22 @@
 # class profile::virtualization::libvirt
 #
 class profile::virtualization::libvirt(
+  $networks        = {},
+  $pools           = {},
   $manage_firewall = false,
   $firewall_extras = {
-    'tcp' => {},
-    'tls' => {},
+    'tcp'      => {},
+    'tls'      => {},
+    'graphics' => {},
   },
 ) {
   include ::libvirt
 
-  $libvirt_networks = hiera_hash (libvirt_networks, undef)
-  unless empty($libvirt_networks) {
-    create_resources(libvirt::network, $libvirt_networks)
-  }
+  validate_hash($networks)
+  validate_hash($pools)
 
-  $libvirt_pool = hiera_hash (libvirt_pool, undef)
-  unless empty($libvirt_pool) {
-    create_resources(libvirt_pool, $libvirt_pool)
-  }
+  create_resources('::libvirt::network', $networks)
+  create_resources(libvirt_pool, $pools)
 
   if $manage_firewall {
     profile::firewall::rule { '180 libvirt-tcp accept tcp':
@@ -29,6 +28,11 @@ class profile::virtualization::libvirt(
     profile::firewall::rule { '181 libvirt-tls accept tcp':
       port   => 16514,
       extras => $firewall_extras['tls']
+    }
+
+    profile::firewall::rule { '182 libvirt-graphics console accept tcp':
+      port   => 5900
+      extras => $firewall_extras['graphics']
     }
   }
 }
