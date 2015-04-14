@@ -27,10 +27,7 @@ class profile::webserver::apache (
     class { $modules : }
   }
 
-  $vhost_params = hiera_hash (definedVhosts, undef)
-  unless empty(vhost_params) {
-    create_resources(apache::vhost, $vhost_params)
-  }
+  create_resources('::apache::vhost', $vhost_definition)
 
   if $manage_firewall {
     profile::firewall::rule { '100 apache accept tcp 80 443':
