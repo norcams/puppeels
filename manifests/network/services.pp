@@ -1,7 +1,8 @@
 #
 class profile::network::services(
-  $manage_dhcp = false,
-  $manage_nat  = false,
+  $manage_dhcp        = false,
+  $manage_nat         = false,
+  $manage_dns_records = false,
 ) {
   $networks = hiera_hash('networks', false)
 
@@ -25,6 +26,19 @@ class profile::network::services(
 
     if $manage_nat {
       # TODO: Add iptables nat rules
+    }
+
+    if $manage_dns_records {
+      ensure_resource('package', 'bind-utils', {'ensure' => 'installed'})
+      $dns_options = hiera_hash('profile::network::services::dns_options')
+      $dns_records = hiera_hash('profile::network::services::dns_records')
+      $record_types = keys($dns_records)
+
+      profile::network::service::dns_record_type { $record_types:
+        options => $dns_options,
+        records => $dns_records,
+      }
+
     }
 
   } else {
