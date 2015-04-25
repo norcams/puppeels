@@ -41,7 +41,7 @@ class profile::base::common (
   $manage_firewall        = false,
   $manage_networkifs      = false,
   $manage_lvm             = false,
-  $manage_timezones	  = false,
+  $manage_timezones       = false,
   $common_packages        = [],
   $common_packages_ensure = 'installed',
   $common_classes         = [],
@@ -53,7 +53,11 @@ class profile::base::common (
   }
 
   if $manage_accounts {
-    include ::account::accounts
+    include ::accounts
+    $accounts_hash = hiera_hash('accounts::accounts_hash', {})
+    if !empty($accounts_hash) {
+      create_resources('::accounts::account', $accounts_hash)
+    }
   }
 
   if $manage_epel {
