@@ -53,11 +53,7 @@ class profile::base::common (
   }
 
   if $manage_accounts {
-    include ::accounts
-    $accounts_hash = hiera_hash('accounts::accounts_hash', {})
-    if !empty($accounts_hash) {
-      create_resources('::accounts::account', $accounts_hash)
-    }
+    include ::accounts::instances
   }
 
   if $manage_epel {
