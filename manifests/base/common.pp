@@ -42,6 +42,8 @@ class profile::base::common (
   $manage_networkifs      = false,
   $manage_lvm             = false,
   $manage_timezones       = false,
+  $manage_hostname        = false,
+  $manage_keyboard        = false,
   $common_packages        = [],
   $common_packages_ensure = 'installed',
   $common_classes         = [],
@@ -106,6 +108,14 @@ class profile::base::common (
 
   if $manage_timezones {
     include timezone
+  }
+
+  if $manage_hostname {
+    include hostname
+  }
+
+  if $manage_keyboard {
+    include keyboard
   }
 
   if $common_packages {
