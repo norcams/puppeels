@@ -5,6 +5,7 @@ class profile::openstack::database::sql (
   $neutron_enabled  = true,
   $heat_enabled     = false,
   $trove_enabled    = false,
+  $cinder_enabled   = false,
   $database         = 'mariadb',
 ) {
 
