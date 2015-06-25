@@ -12,5 +12,9 @@ class profile::openstack::volume::api(
           port   => 8776,
           extras => $firewall_extras,
     }
+        profile::firewall::rule{ '3260 cinder accept iSCSI':
+          port   => 3260,
+          extras => $firewall_extras,
+    }
   }
 }
