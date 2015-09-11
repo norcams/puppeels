@@ -5,19 +5,35 @@ class profile::openstack::network(
   $firewall_extras = {},
 ){
   include ::neutron
-  include "::neutron::plugins::${plugin}"
 
-  if $plugin == 'ml2' {
-    include "::neutron::agents::ml2::${l2_driver}"
-  } else {
-    include "::neutron::agents::${plugin}"
+  case $plugin {
+    'ml2': {
+      include "::neutron::plugins::${plugin}"
+      case $l2_driver {
+        'calico': {
+          include ::calico
+        }
+        default : {
+          include "::neutron::agents::ml2::${l2_driver}"
+        }
+      }
+    }
+    default: {
+      include "::neutron::plugins::${plugin}"
+      include "::neutron::agents::${plugin}"
+    }
   }
 
   if $manage_firewall {
-    profile::firewall::rule{ '223 tunnelling accept gre':
-      port   => undef,
-      proto  => 'gre',
-      extras => $firewall_extras,
+    case $l2_driver {
+      'ovs': {
+        profile::firewall::rule { '223 tunnelling accept gre':
+          port   => undef,
+          proto  => 'gre',
+          extras => $firewall_extras,
+        }
+      }
+      default: {}
     }
   }
 
