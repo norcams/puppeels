@@ -6,7 +6,7 @@ class profile::openstack::network::calico(
   include ::profile::openstack::network
   include ::profile::openstack::network::dhcp
 
-  if $manage_brid {
+  if $manage_bird {
     include ::profile::network::bird
   }
 
