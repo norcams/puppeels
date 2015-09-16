@@ -2,6 +2,7 @@ class profile::openstack::network::calico(
   $manage_bird = true,
   $manage_etcd = true,
 ) {
+  include ::calico
   include ::profile::openstack::network
   include ::profile::openstack::network::dhcp
 
