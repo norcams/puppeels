@@ -2,7 +2,8 @@ class profile::openstack::network::calico(
   $manage_bird = true,
   $manage_etcd = true,
 ) {
-  include profile::openstack::network
+  include ::profile::openstack::network
+  include ::profile::openstack::network::dhcp
 
   if $manage_brid {
     include ::profile::network::bird
