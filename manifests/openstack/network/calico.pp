@@ -3,8 +3,6 @@ class profile::openstack::network::calico(
   $manage_etcd = true,
 ) {
   include ::calico
-  include ::nova::api
-  include ::profile::openstack::network::dhcp
 
   if $manage_bird {
     include ::profile::network::bird
