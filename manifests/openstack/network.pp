@@ -11,7 +11,7 @@ class profile::openstack::network(
       include "::neutron::plugins::${plugin}"
       case $l2_driver {
         'calico': {
-          include ::calico
+          include ::profile::openstack::network::calico
         }
         default : {
           include "::neutron::agents::ml2::${l2_driver}"
