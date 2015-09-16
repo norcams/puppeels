@@ -4,6 +4,7 @@ class profile::openstack::network::calico(
 ) {
   include ::calico
   include ::profile::openstack::network::dhcp
+  include ::profile::openstack::network::metadata
 
   if $manage_bird {
     include ::profile::network::bird
