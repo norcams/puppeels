@@ -99,7 +99,7 @@ class profile::base::common (
   }
 
   if $manage_networkifs {
-    include ::profile::base::interfaces
+    include ::profile::network::interfaces
   }
 
   if $manage_lvm {
