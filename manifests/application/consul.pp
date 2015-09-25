@@ -24,7 +24,6 @@ class profile::application::consul (
       "node_name"        => $hostname,
       "ui_dir"           => "/opt/consul/ui",
       "client_addr"      => "0.0.0.0",
-      "advertise_addr"   => $ipaddress_eth0,
     }
 #    config_hash          => {
 #      "bootstrap_expect" => 1,
