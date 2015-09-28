@@ -22,7 +22,7 @@ class profile::application::consul (
     config_defaults      => hiera_hash('consul::config_hash'),
     config_hash          => {
       "node_name"        => $hostname,
-      "ui_dir"           => "/opt/consul/ui",
+      "data_dir"         => "/opt/consul",
       "client_addr"      => "0.0.0.0",
     }
 #    config_hash          => {
