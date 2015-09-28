@@ -6,7 +6,7 @@ class profile::openstack::compute::consoleproxy(
   include ::nova::vncproxy
 
   if $manage_firewall {
-    profile::firewall::rule { '222 nova-novncproxy accpept tcp':
+    profile::firewall::rule { '222 nova-novncproxy accept tcp':
       port   => 6080,
       extras => $firewall_extras
     }

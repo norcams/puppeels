@@ -39,6 +39,11 @@ class profile::base::common (
   $manage_sudo            = false,
   $manage_authconfig      = false,
   $manage_firewall        = false,
+  $manage_networkifs      = false,
+  $manage_lvm             = false,
+  $manage_timezones       = false,
+  $manage_hostname        = false,
+  $manage_keyboard        = false,
   $common_packages        = [],
   $common_packages_ensure = 'installed',
   $common_classes         = [],
@@ -50,7 +55,7 @@ class profile::base::common (
   }
 
   if $manage_accounts {
-    include ::account::accounts
+    include ::accounts::instances
   }
 
   if $manage_epel {
@@ -91,6 +96,26 @@ class profile::base::common (
     include ::firewall
     include ::profile::firewall::pre
     include ::profile::firewall::post
+  }
+
+  if $manage_networkifs {
+    include ::profile::base::interfaces
+  }
+
+  if $manage_lvm {
+    include ::profile::base::lvm
+  }
+
+  if $manage_timezones {
+    include timezone
+  }
+
+  if $manage_hostname {
+    include hostname
+  }
+
+  if $manage_keyboard {
+    include keyboard
   }
 
   if $common_packages {
