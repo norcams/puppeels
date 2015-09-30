@@ -19,13 +19,14 @@ class profile::firewall::post(
   $firewall_settings = {},
 ){
 
+  firewall { '998 log all':
+    proto => 'all',
+    jump  => 'LOG',
+  }
+
   if $debug {
-    warning('debug is enabled, the traffic is not blocked.')
+    warning('debug is enabled, traffic is not blocked.')
   } else {
-    firewall { '998 log all':
-      proto => 'all',
-      jump  => 'LOG',
-    }
     profile::firewall::rule{ '999 drop all':
       proto  => 'all',
       action => 'drop',
