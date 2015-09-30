@@ -25,7 +25,12 @@ class profile::firewall::post(
   }
 
   if $debug {
-    warning('debug is enabled, traffic is not blocked.')
+    # purge all non-managed rules
+    resources { 'firewall':
+      purge => true
+    }
+    warning('debug enabled, purging all non-managed rules')
+    warning('debug enabled, NO TRAFFIC IS BLOCKED.')
   } else {
     profile::firewall::rule{ '999 drop all':
       proto  => 'all',
