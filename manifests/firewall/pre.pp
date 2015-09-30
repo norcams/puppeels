@@ -16,11 +16,11 @@
 # == Class: profile::firewall::pre
 #
 class profile::firewall::pre(
-  $established_firewall_settings = {},
-  $icmp_firewall_settings        = {},
-  $loopback_firewall_settings    = {},
-  $ssh_firewall_settings         = {},
-  $manage_ssh                    = true,
+  $established_settings = {},
+  $icmp_settings        = {},
+  $loopback_settings    = {},
+  $ssh_settings         = {},
+  $manage_ssh           = true,
 ){
 
   # ensure the correct packages are installed
@@ -30,24 +30,24 @@ class profile::firewall::pre(
   profile::firewall::rule{ '000 accept related established rules':
     proto  => 'all',
     state  => ['RELATED', 'ESTABLISHED'],
-    extras => $firewall_settings,
+    extras => $established_settings,
   }
 
   profile::firewall::rule{ '001 accept all icmp':
     proto  => 'icmp',
-    extras => $firewall_settings,
+    extras => $icmp_settings,
   }
 
   profile::firewall::rule{ '002 accept all to lo interface':
     proto   => 'all',
     iniface => 'lo',
-    extras  => $firewall_settings,
+    extras  => $loopback_settings,
   }
 
   if $manage_ssh {
     profile::firewall::rule{ '003 accept ssh':
       port   => '22',
-      extras => $firewall_settings,
+      extras => $ssh_settings,
     }
   }
 }
