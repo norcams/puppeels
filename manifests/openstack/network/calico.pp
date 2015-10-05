@@ -16,16 +16,16 @@ class profile::openstack::network::calico(
 
   # Define a wrapper to avoid duplicating config per interface
   define calico_interface {
-    iniface_name = regsubst($name, '_', '.')
+    $iniface_name = regsubst($name, '_', '.')
     profile::firewall::rule { "010 accept all to ${name} (calico)":
         proto   => 'all',
-        iniface => "${iniface_name}",
+        iniface => $iniface_name,
         extras  => $firewall_extras,
     }
   }
 
   if $manage_firewall {
     # Depend on $transport_interfaces fact
-    calico_interface { $transport_interfaces: }
+    calico_interface { $::transport_interfaces: }
   }
 }
