@@ -35,6 +35,7 @@ class profile::openstack::network::calico(
         table         => 'mangle',
         jump          => 'CHECKSUM',
         action        => undef,
+        state         => undef,
       },
     }
     # Depend on $transport_interfaces fact
