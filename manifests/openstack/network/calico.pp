@@ -25,13 +25,16 @@ class profile::openstack::network::calico(
   }
 
   if $manage_firewall {
+    # Per https://github.com/projectcalico/calico/blob/master/rpm/calico.spec#L43-L48
     profile::firewall::rule { "911 mangle checksum for dhcp":
       proto => 'udp',
-      chain => 'mangle',
+      chain => 'POSTROUTING',
       port  => '68',
       extras => {
-        jump  => 'CHECKSUM',
         checksum_fill => 'true',
+        table         => 'mangle',
+        jump          => 'CHECKSUM',
+        action        => undef,
       },
     }
     # Depend on $transport_interfaces fact
