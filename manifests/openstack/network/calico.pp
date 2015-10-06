@@ -45,6 +45,11 @@ class profile::openstack::network::calico(
         state         => undef,
       },
     }
+    profile::firewall::rule { '912 nova-api-metadata accept tcp':
+      port   => 8775,
+      extras => $firewall_extras
+    }
+
     # Depend on $transport_interfaces fact
     calico_interface { $::transport_interfaces: }
   }
