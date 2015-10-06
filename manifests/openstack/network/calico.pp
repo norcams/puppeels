@@ -17,7 +17,7 @@ class profile::openstack::network::calico(
   # Define a wrapper to avoid duplicating config per interface
   define calico_interface {
     $iniface_name = regsubst($name, '_', '.')
-    profile::firewall::rule { "010 accept all to ${name} (calico)":
+    profile::firewall::rule { "010 calico - accept all to ${name}":
         proto   => 'all',
         iniface => $iniface_name,
         extras  => $firewall_extras,
@@ -25,8 +25,15 @@ class profile::openstack::network::calico(
   }
 
   if $manage_firewall {
+    profile::firewall::rule { '910 calico - allow DHCP requests':
+      proto  => 'udp',
+      port   => '67',
+      extras => {
+        sport => '68',
+      }
+    }
     # Per https://github.com/projectcalico/calico/blob/master/rpm/calico.spec#L43-L48
-    profile::firewall::rule { "911 mangle checksum for dhcp":
+    profile::firewall::rule { '911 calico - mangle checksum for dhcp':
       proto => 'udp',
       chain => 'POSTROUTING',
       port  => '68',
