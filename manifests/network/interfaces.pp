@@ -22,5 +22,6 @@ class profile::network::interfaces {
     create_resources(netcf_if, $network_params_netcf)
   }
 
+  # New example42 network module
+  include ::network
 }
-
