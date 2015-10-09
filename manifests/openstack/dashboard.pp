@@ -6,7 +6,7 @@ class profile::openstack::dashboard(
   include ::horizon
 
   if $manage_ssl_cert {
-    contain profile::application::sslcert
+    include profile::application::sslcert
     Class['Profile::Application::Sslcert'] ~>
     Service[$::horizon::params::http_service]
   }
