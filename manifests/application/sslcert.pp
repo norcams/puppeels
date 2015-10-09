@@ -3,16 +3,12 @@
 # Author: Name Surname <name.surname@mail.com>
 class profile::application::sslcert (
     $create_new     = false,
+    $cert_defines   = undef,
 ) {
 
   contain ::openssl
 
   if $create_new {
-    openssl::certificate::x509 { "$fqdn":
-      country	   => 'NO',
-      organization => 'private.org',
-      commonname   => $fqdn,
-      owner        => apache,
-    }
+    create_resources('openssl::certificate::x509', hiera_hash('profile::application::sslcert::cert_defines', {}))
   }
 }
