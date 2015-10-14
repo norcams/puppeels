@@ -14,7 +14,6 @@ class profile::openstack::dashboard(
   if $manage_firewall {
     profile::firewall::rule { '235 openstack-dashboard accept tcp':
       port    => [80,443],
-      iniface => "$interface_service1",
       extras  => $firewall_extras,
     }
   }
