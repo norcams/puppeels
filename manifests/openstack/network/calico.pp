@@ -1,3 +1,4 @@
+#
 class profile::openstack::network::calico(
   $manage_bird     = true,
   $manage_etcd     = true,
@@ -17,15 +18,16 @@ class profile::openstack::network::calico(
   # Define a wrapper to avoid duplicating config per interface
   define calico_interface {
     $iniface_name = regsubst($name, '_', '.')
-    profile::firewall::rule { "010 calico - accept all to ${name}":
-        proto   => 'all',
+    profile::firewall::rule { "010 bird bgp - accept tcp to ${name}":
+        proto   => 'tcp',
+        port    => '179',
         iniface => $iniface_name,
-        extras  => $firewall_extras,
+        extras  => $profile::openstack::network::calico::firewall_extras,
     }
   }
 
   if $manage_firewall {
-    profile::firewall::rule { '910 calico - allow DHCP requests':
+    profile::firewall::rule { '910 dnsmasq - allow DHCP requests':
       proto  => 'udp',
       port   => '67',
       extras => {
@@ -47,7 +49,6 @@ class profile::openstack::network::calico(
     }
     profile::firewall::rule { '912 nova-api-metadata accept tcp':
       port   => 8775,
-      extras => $firewall_extras
     }
 
     # Depend on $transport_interfaces fact
