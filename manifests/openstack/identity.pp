@@ -7,7 +7,8 @@ class profile::openstack::identity (
   $swift_enabled      = true,
   $trove_enabled      = true,
   $manage_firewall    = true,
-  $firewall_extras    = {}
+  $firewall_extras    = {},
+  $firewall_extras_a  = {},
 ) {
 
   include ::keystone
@@ -51,7 +52,7 @@ class profile::openstack::identity (
     }
     profile::firewall::rule { '229 keystone-admin accept tcp':
       port   => 35357,
-      extras => $firewall_extras
+      extras => $firewall_extras_a
     }
   }
 }
