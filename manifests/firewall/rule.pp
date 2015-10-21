@@ -14,24 +14,26 @@
 # under the License.
 #
 define profile::firewall::rule (
-  $port    = undef,
-  $proto   = 'tcp',
-  $action  = 'accept',
-  $state   = ['NEW'],
-  $source  = '0.0.0.0/0',
-  $iniface = undef,
-  $chain   = 'INPUT',
-  $extras  = {},
+  $port        = undef,
+  $proto       = 'tcp',
+  $action      = 'accept',
+  $state       = ['NEW'],
+  $source      = '0.0.0.0/0',
+  $destination = undef,
+  $iniface     = undef,
+  $chain       = 'INPUT',
+  $extras      = {},
 ) {
 
   $basic = {
-    'port'    => $port,
-    'proto'   => $proto,
-    'action'  => $action,
-    'state'   => $state,
-    'source'  => $source,
-    'iniface' => $iniface,
-    'chain'   => $chain,
+    'port'        => $port,
+    'proto'       => $proto,
+    'action'      => $action,
+    'state'       => $state,
+    'source'      => $source,
+    'destination' => $destination,
+    'iniface'     => $iniface,
+    'chain'       => $chain,
   }
 
   $rule = merge($basic, $extras)
