@@ -96,6 +96,7 @@ class profile::base::common (
     include ::firewall
     include ::profile::firewall::pre
     include ::profile::firewall::post
+    include ::profile::firewall
   }
 
   if $manage_networkifs {
