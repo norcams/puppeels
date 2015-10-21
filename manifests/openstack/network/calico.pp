@@ -29,9 +29,9 @@ class profile::openstack::network::calico(
   if $manage_firewall {
     profile::firewall::rule { '910 dnsmasq - allow DHCP requests':
       proto  => 'udp',
-      port   => '67',
+      port   => ['67','68'],
       extras => {
-        sport => '68',
+        sport => ['67','68'],
       }
     }
     # Per https://github.com/projectcalico/calico/blob/master/rpm/calico.spec#L43-L48
