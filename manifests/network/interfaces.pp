@@ -1,38 +1,27 @@
-# Class: profile::base::interfaces
-#
 #
 class profile::network::interfaces {
 
   # Set up extra logical fact names for network facts
   include named_interfaces
 
-  $network_params = hiera_hash (network_if, undef)
+  # example42 network module
+  include network
 
-  # netcf-puppet needs netcf package
-  # The package has the same name on RedHat and debian
-
-  unless empty($network_params) {
-    ensure_resource('package', 'netcf', {'ensure' => 'installed'})
-    create_resources(network_if, $network_params)
+  # Always set ifnames=0
+  # .. and rely on biosdevname for physical servers
+  kernel_parameter { "net.ifnames":
+    ensure => present,
+    value  => "1",
   }
-
-  $network_params_netcf = hiera_hash (netcf_if, undef)
-  unless empty($network_params_netcf) {
-    ensure_resource('package', 'netcf', {'ensure' => 'installed'})
-    create_resources(netcf_if, $network_params_netcf)
-  }
-
-  # New example42 network module
-  include ::network
 
   # Configure 82599ES SFP+ interface module options, if present
-  if $::lspci_has['intel82599sfp'] and "ixgbe" in $::kernel_modules {
-    include ::kmod
+  if $::lspci_has["intel82599sfp"] and "ixgbe" in $::kernel_modules {
     # Set SFP option in /etc/modprobe.d/ixgbe.conf
-    kmod::option { 'allow all SFPs':
-      module  => 'ixgbe',
-      option  => 'allow_unsupported_sfp',
-      value   => '1',
+    include kmod
+    kmod::option { "allow any SFPs":
+      module  => "ixgbe",
+      option  => "allow_unsupported_sfp",
+      value   => "1",
     }
     # Set option in grub2
     kernel_parameter { "ixgbe.allow_unsupported_sfp":
