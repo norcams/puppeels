@@ -11,7 +11,7 @@ class profile::network::interfaces {
   # .. and rely on biosdevname for physical servers
   kernel_parameter { "net.ifnames":
     ensure => present,
-    value  => "1",
+    value  => "0",
   }
 
   # Configure 82599ES SFP+ interface module options, if present
