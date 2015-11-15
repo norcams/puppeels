@@ -1,32 +1,4 @@
 #
-# Author: Yanis Guenane <yguenane@gmail.com>
-# License: ApacheV2
-#
-# Puppet module :
-#   mod 'puppetlabs/stdlib'
-#   mod 'herculesteam/augeasproviders'
-#   mod 'herculesteam/augeasproviders_apache'
-#   mod 'herculesteam/augeasproviders_base'
-#   mod 'herculesteam/augeasproviders_grub'
-#   mod 'herculesteam/augeasproviders_mounttab'
-#   mod 'herculesteam/augeasproviders_nagios'
-#   mod 'herculesteam/augeasproviders_pam'
-#   mod 'herculesteam/augeasproviders_postgresql'
-#   mod 'herculesteam/augeasproviders_puppet'
-#   mod 'herculesteam/augeasproviders_shellvar'
-#   mod 'herculesteam/augeasproviders_ssh'
-#   mod 'herculesteam/augeasproviders_sysctl'
-#   mod 'herculesteam/augeasproviders_syslog'
-#   mod 'stahnma/epel'
-#   mod 'account',
-#     :git => 'https://github.com/Mylezeem/puppet-account.git',
-#     :ref => 'multiple_accounts'
-#   mod 'puppetlabs/ntp'
-#   mod 'saz/sudo'
-#   mod 'saz/ssh'
-#   mod 'yguenane/authconfig'
-#   mod 'camptocamp/postfix'
-#
 class profile::base::common (
   $manage_augeasproviders = false,
   $manage_epel            = false,
