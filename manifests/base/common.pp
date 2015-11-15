@@ -39,10 +39,9 @@ class profile::base::common (
   $manage_sudo            = false,
   $manage_authconfig      = false,
   $manage_firewall        = false,
-  $manage_networkifs      = false,
+  $manage_network         = false,
   $manage_lvm             = false,
   $manage_timezones       = false,
-  $manage_hostname        = false,
   $manage_keyboard        = false,
   $common_packages        = [],
   $common_packages_ensure = 'installed',
@@ -99,7 +98,7 @@ class profile::base::common (
     include ::profile::firewall
   }
 
-  if $manage_networkifs {
+  if $manage_network {
     include ::profile::network::interfaces
   }
 
@@ -109,10 +108,6 @@ class profile::base::common (
 
   if $manage_timezones {
     include timezone
-  }
-
-  if $manage_hostname {
-    include hostname
   }
 
   if $manage_keyboard {
