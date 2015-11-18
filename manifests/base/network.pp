@@ -1,20 +1,20 @@
 #
-class profile::network::interfaces {
+class profile::base::network {
 
   # Set up extra logical fact names for network facts
-  include named_interfaces
+  include ::named_interfaces
 
   # example42 network module
-  include network
+  include ::network
 
-  # Always set ifnames=0
-  # .. and rely on biosdevname for physical servers
+  # - Set ifnames=0 and use old ifnames, e.g 'eth0'
+  # - Use biosdevname on physical servers, e.g 'em1'
   kernel_parameter { "net.ifnames":
     ensure => present,
     value  => "0",
   }
 
-  # Configure 82599ES SFP+ interface module options, if present
+  # Configure 82599ES SFP+ interface module options
   if $::lspci_has["intel82599sfp"] and "ixgbe" in $::kernel_modules {
     # Set SFP option in /etc/modprobe.d/ixgbe.conf
     include kmod
