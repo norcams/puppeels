@@ -1,5 +1,7 @@
 #
-class profile::base::network {
+class profile::base::network(
+  $manage_dummy = false,
+) {
 
   # Set up extra logical fact names for network facts
   include ::named_interfaces
@@ -17,7 +19,7 @@ class profile::base::network {
   # Configure 82599ES SFP+ interface module options
   if $::lspci_has["intel82599sfp"] and "ixgbe" in $::kernel_modules {
     # Set SFP option in /etc/modprobe.d/ixgbe.conf
-    include kmod
+    include ::kmod
     kmod::option { "allow any SFPs":
       module  => "ixgbe",
       option  => "allow_unsupported_sfp",
@@ -28,6 +30,12 @@ class profile::base::network {
       ensure => present,
       value  => "1",
     }
+  }
+
+  # Persistently install dummy module
+  if $manage_dummy {
+    include ::kmod
+    kmod::install { "dummy": }
   }
 
 }
