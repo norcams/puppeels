@@ -26,7 +26,6 @@ class profile::network::services(
 
     if $manage_nat {
       # This node is a gw, enable IP fwd
-      include ::sysctl
       sysctl::value { "net.ipv4.ip_forward":
         value => 1,
       }
