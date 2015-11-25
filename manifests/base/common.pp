@@ -15,6 +15,8 @@ class profile::base::common (
   $manage_lvm             = false,
   $manage_timezones       = false,
   $manage_keyboard        = false,
+  $include_physical       = false,
+  $include_virtual        = false,
   $common_packages        = [],
   $common_packages_ensure = 'installed',
   $common_classes         = [],
@@ -84,6 +86,14 @@ class profile::base::common (
 
   if $manage_keyboard {
     include keyboard
+  }
+
+  if $include_physical and ($::is_virtual == false) {
+    include ::profile::base::physical
+  }
+
+  if $include_virtual and ($::is_virtual == true) {
+    include ::profile::base::virtual
   }
 
   if $common_packages {
