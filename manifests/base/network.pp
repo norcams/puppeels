@@ -19,7 +19,7 @@ class profile::base::network(
   # Persistently install dummy module
   if $manage_dummy {
     include ::kmod
-    kmod::install { "dummy": }
+    kmod::load { "dummy": }
   }
 
 }
