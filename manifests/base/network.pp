@@ -34,13 +34,13 @@ class profile::base::network(
     shellvar { "http_proxy in profile.d":
       ensure   => $ensure_value,
       target   => $target,
-      variable => "HTTP_PROXY",
+      variable => "http_proxy",
       value    => $http_proxy,
     }
     shellvar { "https_proxy in profile.d":
       ensure   => $ensure_value,
       target   => $target,
-      variable => "HTTPS_PROXY",
+      variable => "https_proxy",
       value    => $http_proxy,
     }
   }
