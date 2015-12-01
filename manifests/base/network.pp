@@ -1,6 +1,8 @@
 #
 class profile::base::network(
-  $manage_dummy = false,
+  $manage_dummy     = false,
+  $manage_httpproxy = false,
+  $http_proxy       = undef,
 ) {
 
   # Set up extra logical fact names for network facts
@@ -20,6 +22,27 @@ class profile::base::network(
   if $manage_dummy {
     include ::kmod
     kmod::load { "dummy": }
+  }
+
+  if $manage_httpproxy {
+    $ensure_value = $http_proxy ? {
+      undef    => absent,
+      default => present,
+    }
+    $target = "/etc/profile.d/proxy.sh"
+
+    shellvar { "http_proxy in profile.d":
+      ensure   => $ensure_value,
+      target   => $target,
+      variable => "HTTP_PROXY",
+      value    => $http_proxy,
+    }
+    shellvar { "https_proxy in profile.d":
+      ensure   => $ensure_value,
+      target   => $target,
+      variable => "HTTPS_PROXY",
+      value    => $http_proxy,
+    }
   }
 
 }
