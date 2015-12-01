@@ -5,6 +5,8 @@ class profile::network::services(
   $manage_dns_records = false,
   $dns_proxy          = false,
   $http_proxy         = false,
+  $manage_firewall    = true,
+  $firewall_extras    = {}
 ) {
   $networks = hiera_hash('networks', false)
 
@@ -50,11 +52,33 @@ class profile::network::services(
     # Enable a dns proxy server
     if $dns_proxy {
       include ::dnsmasq
+
+      if $manage_firewall {
+        profile::firewall::rule { '020 dns-proxy accept tcp':
+          port   => 53,
+          proto  => 'tcp',
+          extras => $firewall_extras
+        }
+        profile::firewall::rule { '021 dns-proxy accept udp':
+          port   => 53,
+          proto  => 'udp',
+          extras => $firewall_extras
+        }
+      }
     }
 
     # Enable a http proxy server
     if $http_proxy {
       include ::tinyproxy
+
+      if $manage_firewall {
+        profile::firewall::rule { '110 http-proxy accept tcp':
+          port   => 8888,
+          proto  => 'tcp',
+          state  => ['NEW','ESTABLISHED'],
+          extras => $firewall_extras
+        }
+      }
     }
 
   } else {
