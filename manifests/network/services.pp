@@ -3,6 +3,8 @@ class profile::network::services(
   $manage_dhcp        = false,
   $manage_nat         = false,
   $manage_dns_records = false,
+  $dns_proxy          = false,
+  $http_proxy         = false,
 ) {
   $networks = hiera_hash('networks', false)
 
@@ -12,7 +14,7 @@ class profile::network::services(
     $nat    = $networks[$location]['nat']
 
     if $manage_dhcp {
-      include dnsmasq
+      include ::dnsmasq
       dnsmasq::conf { 'disable-dns': prio => '01', content => "port=0\n" }
 
       # Define dhcp ranges per subnet
@@ -43,6 +45,16 @@ class profile::network::services(
         records => $dns_records,
       }
 
+    }
+
+    # Enable a dns proxy server
+    if $dns_proxy {
+      include ::dnsmasq
+    }
+
+    # Enable a http proxy server
+    if $http_proxy {
+      include ::tinyproxy
     }
 
   } else {
