@@ -39,10 +39,12 @@ class profile::network::services(
 
     if $ntp_server {
       # This node is a ntp-server. Default config is fine, open fw
-      profile::firewall::rule { '022 ntp-server accept udp':
-        port   => 123,
-        proto  => 'udp',
-        extras => $firewall_extras
+      if $manage_firewall {
+        profile::firewall::rule { '022 ntp-server accept udp':
+          port   => 123,
+          proto  => 'udp',
+          extras => $firewall_extras
+        }
       }
     }
 
