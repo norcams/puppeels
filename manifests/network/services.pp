@@ -5,6 +5,7 @@ class profile::network::services(
   $manage_dns_records = false,
   $dns_proxy          = false,
   $http_proxy         = false,
+  $ntp_server         = false,
   $manage_firewall    = true,
   $firewall_extras    = {}
 ) {
@@ -34,6 +35,15 @@ class profile::network::services(
         value => 1,
       }
       # TODO: Add iptables nat rules
+    }
+
+    if $ntp_server {
+      # This node is a ntp-server. Default config is fine, open fw
+      profile::firewall::rule { '022 ntp-server accept udp':
+        port   => 123,
+        proto  => 'udp',
+        extras => $firewall_extras
+      }
     }
 
     if $manage_dns_records {
