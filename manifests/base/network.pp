@@ -31,18 +31,15 @@ class profile::base::network(
     }
     $target = "/etc/profile.d/proxy.sh"
 
-    shellvar { "http_proxy in profile.d":
-      ensure   => $ensure_value,
-      target   => $target,
-      variable => "http_proxy",
-      value    => $http_proxy,
+    shellvar { "http_proxy":
+      ensure  => exported,
+      target  => $target,
+      value   => $http_proxy,
     }
-    shellvar { "https_proxy in profile.d":
-      ensure   => $ensure_value,
-      target   => $target,
-      variable => "https_proxy",
-      value    => $http_proxy,
+    shellvar { "https_proxy":
+      ensure  => exported,
+      target  => $target,
+      value   => $http_proxy,
     }
   }
-
 }
