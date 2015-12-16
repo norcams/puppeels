@@ -97,7 +97,8 @@ class profile::base::common (
   }
 
   if $common_packages {
-    package { $common_packages:
+    $base_common_packages = hiera_array('profile::base::common::common_packages')
+    package { $base_common_packages:
       ensure => $common_packages_ensure
     }
   }
