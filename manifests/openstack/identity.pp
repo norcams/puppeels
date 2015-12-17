@@ -15,6 +15,7 @@ class profile::openstack::identity (
   include ::keystone::roles::admin
   include ::keystone::endpoint
   include ::keystone::cron::token_flush
+  include ::keystone::wsgi::apache
 
   if $swift_enabled {
     include ::swift::keystone::auth
